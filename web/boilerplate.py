@@ -29,6 +29,7 @@ def get_application(settings):
         Set url routes to given application.
         """
         app.add_url_rule('/', 'index', index)
+        app.add_url_rule('/get-schedule/', 'get_schedule', get_schedule)
         app.add_url_rule('/get_full_graph/', 'get_full_graph', get_full_graph)
         app.add_url_rule('/save_data/', 'save_data', save_data, methods=['POST'])
         # RESTful responses
@@ -71,6 +72,14 @@ def get_full_graph():
     :return:rest query for json
     """
     return fl.jsonify(_get_data())
+
+def get_schedule():
+    sched = [
+        {'date': '10', 'action': 'start', 'id': 1},
+        {'date': '11', 'action': 'start', 'id': 2},
+        {'date': '12', 'action': 'end', 'id': 3},
+    ]
+    return fl.jsonify(schedule=sched)
 
 
 def run_server():
