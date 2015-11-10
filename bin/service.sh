@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # chkconfig: - 95 95
 ### BEGIN INIT INFO
 # Provides:          someservice
@@ -12,15 +12,13 @@
 ### END INIT INFO
 
 
-# this service is meant to start and stop crm
+# this service is meant to start and stop someservice
 
-
-DESC="someservice"
-NAME=web.py
-PROCESS='web.py'
-RUNCOMMAND="./web.py"
-HOME='/var/local/someservice/'
-LOGFILE='/tmp/log.log'
+NAME=boilerplate.py
+PROCESS=$NAME
+RUNCOMMAND="./web/$NAME"
+HOME="$HOME/repos/boilerplate-py/"
+LOGFILE='/tmp/boilerplate.log'
 
 do_start()
 {
@@ -34,7 +32,6 @@ do_start()
 do_stop()
 {
     echo "$NAME stopping ... ";
-    killall $NAME
     ps aux | grep $PROCESS | grep -v 'grep' | awk '{print $2}' | xargs kill
     sleep 1
     get_status
@@ -57,7 +54,7 @@ get_status()
     ps_out=$(ps aux | grep $PROCESS | grep -v 'grep')
     if [ -n "$ps_out" ]; then
         pid=$(ps x | grep $PROCESS | grep -v 'grep' | awk '{ print $1 }')
-        echo " * $NAME is start/running, process $pid"
+        echo " * $NAME is start/running"
     else
         echo " * $NAME is not running"
     fi

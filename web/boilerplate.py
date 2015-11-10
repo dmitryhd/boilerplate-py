@@ -9,7 +9,9 @@ import json
 import logging
 import logging.handlers
 
-settings = {}
+settings = {
+    'LOGFILE': '/tmp/boilerplate.log'
+}
 
 
 def get_application(settings):
@@ -38,12 +40,12 @@ def get_application(settings):
     def setup_request():
         pass
 
-    # log = logging.getLogger('werkzeug')
-    # log.setLevel(logging.INFO)
-    # file_handler = logging.handlers.RotatingFileHandler(
-    #     '/tmp/graph.edit.log', mode='a', maxBytes=10**5, backupCount=1)
-    # file_handler.setLevel(logging.INFO)
-    # log.addHandler(file_handler)
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.INFO)
+    file_handler = logging.handlers.RotatingFileHandler(
+        settings['LOGFILE'], mode='a', maxBytes=10**5, backupCount=1)
+    file_handler.setLevel(logging.INFO)
+    log.addHandler(file_handler)
     return app
 
 
