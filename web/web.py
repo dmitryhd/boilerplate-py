@@ -2,14 +2,14 @@
 
 # pylint: disable=no-member,no-name-in-module
 
-""" Web interface for lead generator. """
+""" Simple web service boilerplate. """
 
 import flask as fl
 import json
 import logging
 import logging.handlers
 
-web_log = logging.getLogger('werkzeug')
+settings = {}
 
 
 def get_application(settings):
@@ -20,9 +20,17 @@ def get_application(settings):
     :return: Flask app
     """
     app = fl.Flask(__name__)
-    app.settings = settings
     app.config.update(settings)
     app.debug = True
+    def set_routing(app):
+        """
+        Set url routes to given application.
+        """
+        app.add_url_rule('/', 'index', index)
+        app.add_url_rule('/get_full_graph/', 'get_full_graph', get_full_graph)
+        app.add_url_rule('/save_data/', 'save_data', save_data, methods=['POST'])
+        # RESTful responses
+        # app.add_url_rule('/status/', 'get_status', get_status)
 
     set_routing(app)
 
@@ -30,26 +38,18 @@ def get_application(settings):
     def setup_request():
         pass
 
-    file_handler = logging.handlers.RotatingFileHandler(
-        '/tmp/graph.edit.log', mode='a', maxBytes=10**5, backupCount=1)
-    file_handler.setLevel(logging.INFO)
-    # app.logger.handlers = []
-    log = logging.getLogger('werkzeug')
-    log.handlers = []
-    log.setLevel(logging.INFO)
-    log.addHandler(file_handler)
+    # log = logging.getLogger('werkzeug')
+    # log.setLevel(logging.INFO)
+    # file_handler = logging.handlers.RotatingFileHandler(
+    #     '/tmp/graph.edit.log', mode='a', maxBytes=10**5, backupCount=1)
+    # file_handler.setLevel(logging.INFO)
+    # log.addHandler(file_handler)
     return app
 
 
-def set_routing(app):
-    """
-    Set url routes to given application.
-    """
-    app.add_url_rule('/', 'graph_edit', graph_edit)
-    app.add_url_rule('/get_full_graph/', 'get_full_graph', get_full_graph)
-    app.add_url_rule('/save_data/', 'save_data', save_data, methods=['POST'])
-    # RESTful responses
-    # app.add_url_rule('/status/', 'get_status', get_status)
+def index():
+    """ View """
+    return fl.render_template('index.html')
 
 
 def save_data():
@@ -58,12 +58,7 @@ def save_data():
     return 'ok', 200
 
 
-def graph_edit():
-    """ View """
-    return fl.render_template('graph.html')
-
-
-def _get_graph():
+def _get_data():
     with open('static/rec_graph.json') as fd:
         gr_json = fd.read()
         return json.loads(gr_json)
@@ -73,10 +68,7 @@ def get_full_graph():
     """
     :return:rest query for json
     """
-    return fl.jsonify(_get_graph())
-
-
-settings = {}
+    return fl.jsonify(_get_data())
 
 
 def run_server():
