@@ -1,0 +1,10 @@
+*.pyc
+.ipynb_checkpoints
+pending_changes
+.coverage
+*.idea
+.~*#
+.noseids
+docs/sphinx/_build/
+docs/sphinx/_static/
+docs/sphinx/_templates/

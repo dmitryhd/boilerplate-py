@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script language="javascript" src="/static/js/jquery.js"></script>
+    <script language="javascript" src="/static/js/graph.js"></script>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="/static/css/graph.css" rel="stylesheet">
+</head>
+<body class="container-fluid">
+<h1>Recommendations graph</h1>
+<hr/>
+<div id="body">
+    <div id="footer">
+    </div>
+</div>
+<div id="node-info">
+    <div class="panel panel-default">
+        <div class="panel-heading">Current Node</div>
+        <div class="panel-body">
+            <form>
+                <div class="form-group">
+                    <label>Current node name</label>
+                    <input class="form-control"  id="cur-node-name" type="text" size="40">
+                </div>
+                <div class="form-group" id="W"  style="display: none">
+                    <label>W (вес правила)</label>
+                    <input class="form-control"   id="cur-node-w" type="number" step="0.1" value="0.0">
+                </div>
+                <div class="form-group" id="Lw" style="display: none">
+                    <label>Lw (location weight)</label>
+                    <input class="form-control"   id="cur-node-lw" type="number" step="0.1" value="0.0">
+                </div>
+                <div class="form-group" id="Pw" style="display: none">
+                    <label>Pw (price weight)</label>
+                    <input  class="form-control"   id="cur-node-pw" type="number" step="0.1"  value="0.0">
+                </div>
+                <br/>
+                <a class="btn btn-default" onclick="editNode();">save node</a>
+                <a class="btn btn-danger"  onclick="deleteNode();">delete node</a>
+            </form>
+
+        </div>
+    </div>
+    <div class="panel panel-default" id="add-new-node" style="display: none;">
+        <div class="panel-heading">Add new node</div>
+        <div class="panel-body">
+            <form>
+                <input class="form-control"    id="new-node-name" type="text" size="40">
+                <br/>
+                W:<input class="form-control"    id="new-node-w" type="number" step="0.1" value="0.0">
+                <br/>
+                lw:<input  class="form-control"  id="new-node-lw" type="number" step="0.1" value="0.0">
+                <br/>
+                pw:<input class="form-control"   id="new-node-pw" type="number" step="0.1"  value="0.0">
+                <br/>
+                <a class="btn btn-default" onclick="addChild(currentNode);">add</a>
+                <br />
+                <hr/>
+            </form>
+            <a class="btn btn-large btn-primary"  onclick="saveAll();">save all</a>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    plotGraph();
+</script>
+</body>
