@@ -5,21 +5,21 @@ Sample web server included with **python3 and Flask**.
 
 Web page is using *angular* and *jQuery* (libs included in static).
 
+- Editable page with actions
+- User can add and delete actions on the fly
+- Customizable logging
+
 Usage
 -----
+
 ```
-service ...
+$ ./bin/run_boilerplate.py -p <port>
 ```
+- also make test
+- ./bin/service.sh start
 
-- note1
-
-
-Features
----------
-
-- list of features
-
-Bugs
+TODOs:
 -------
-
-- known bug
+- add loading icon
+- handle all exceptions and log them
+- if production - send messages by email
