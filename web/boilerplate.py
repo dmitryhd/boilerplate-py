@@ -5,13 +5,8 @@
 """ Simple web service boilerplate. """
 
 import flask as fl
-import json
-import logging
-import logging.handlers
-
-settings = {
-    'LOGFILE': '/tmp/boilerplate.log'
-}
+from . log import configure_logger
+from . settings import Settings
 
 
 def get_application(settings):
@@ -22,31 +17,21 @@ def get_application(settings):
     :return: Flask app
     """
     app = fl.Flask(__name__)
-    app.config.update(settings)
     app.debug = True
     def set_routing(app):
         """
         Set url routes to given application.
         """
+        # Views
         app.add_url_rule('/', 'index', index)
+        # REST api
         app.add_url_rule('/get-schedule/', 'get_schedule', get_schedule)
-        app.add_url_rule('/get_full_graph/', 'get_full_graph', get_full_graph)
         app.add_url_rule('/save_data/', 'save_data', save_data, methods=['POST'])
-        # RESTful responses
         # app.add_url_rule('/status/', 'get_status', get_status)
 
     set_routing(app)
 
-    @app.before_request
-    def setup_request():
-        pass
-
-    log = logging.getLogger('werkzeug')
-    log.setLevel(logging.INFO)
-    file_handler = logging.handlers.RotatingFileHandler(
-        settings['LOGFILE'], mode='a', maxBytes=10**5, backupCount=1)
-    file_handler.setLevel(logging.INFO)
-    log.addHandler(file_handler)
+    configure_logger('werkzeug', settings.logfile_location)
     return app
 
 
@@ -61,18 +46,6 @@ def save_data():
     return 'ok', 200
 
 
-def _get_data():
-    with open('static/rec_graph.json') as fd:
-        gr_json = fd.read()
-        return json.loads(gr_json)
-
-
-def get_full_graph():
-    """
-    :return:rest query for json
-    """
-    return fl.jsonify(_get_data())
-
 def get_schedule():
     sched = [
         {'date': '10', 'action': 'start', 'id': 1},
@@ -82,10 +55,10 @@ def get_schedule():
     return fl.jsonify(schedule=sched)
 
 
-def run_server():
+def run_server(port=9000):
+    settings = Settings()
     app = get_application(settings)
-    print('running server')
-    app.run()
+    app.run(port=port)
 
 
 if __name__ == '__main__':
