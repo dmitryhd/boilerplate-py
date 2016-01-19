@@ -2,9 +2,13 @@
 
 # pylint: disable=no-member,no-name-in-module
 
-""" Simple web service boilerplate. """
+"""
+Simple web service boilerplate.
+"""
 
 import flask as fl
+import argparse
+
 from . log import configure_logger
 from . settings import Settings
 
@@ -61,5 +65,12 @@ def run_server(port=9000):
     app.run(port=port)
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--port', type=int, default=9000)
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
-    run_server()
+    args = parse_args()
+    run_server(args.port)
