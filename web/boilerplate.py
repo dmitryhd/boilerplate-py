@@ -29,12 +29,10 @@ def get_application(settings):
         # Views
         app.add_url_rule('/', 'index', index)
         # REST api
-        app.add_url_rule('/get-schedule/', 'get_schedule', get_schedule)
-        app.add_url_rule('/save_data/', 'save_data', save_data, methods=['POST'])
-        # app.add_url_rule('/status/', 'get_status', get_status)
+        app.add_url_rule('/get-recommendations/<int:user_id>',
+                         'get_recommendations', get_recommendations)
 
     set_routing(app)
-
     configure_logger('werkzeug', settings.logfile_location)
     return app
 
@@ -44,19 +42,18 @@ def index():
     return fl.render_template('index.html')
 
 
-def save_data():
-    print(fl.request.values)
-    print(fl.request.json)
-    return 'ok', 200
-
-
-def get_schedule():
-    sched = [
-        {'date': '10', 'action': 'start', 'id': 1},
-        {'date': '11', 'action': 'start', 'id': 2},
-        {'date': '12', 'action': 'end', 'id': 3},
+def get_recommendations(user_id):
+    recoms = [
+        {'item_id': '10'},
+        {'item_id': '10'},
+        {'item_id': '10'},
+        {'item_id': '10'},
     ]
-    return fl.jsonify(schedule=sched)
+    history = [
+        {'item_id': 12},
+        {'item_id': 13},
+    ]
+    return fl.jsonify(recoms=recoms, history=history)
 
 
 def run_server(port=9000):

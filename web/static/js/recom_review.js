@@ -9,43 +9,22 @@ Views:
 var app = angular.module('recom_review', []);
 
 app.controller('reviewCtrl', function($scope, $http) {
-    $scope.schedule = [];
-    $scope.loadSchedule = function () {
+    $scope.recoms = [];
+    $scope.user_id = 0;
+    $scope.loadRecommendations = function (user_id) {
         var httpRequest = $http({
             method: 'GET',
-            url: '/get-schedule/',
+            url: '/get-recommendations/' + user_id,
         }).success(function (data, status) {
-            $scope.schedule = data.schedule;
+            $scope.recoms = data.recoms;
+            $scope.history = data.history;
         });
     };
-    $scope.deleteFromSchedule = function (id) {
-        var index = 0;
-        for (var i = 0; i < $scope.schedule.length; i++) {
-            if($scope.schedule[i].id == id) {
-                index = i;
-                break;
-            }
-        }
-        $scope.schedule.splice(index, 1);
-    }
-    $scope.scheduleAction = function () {
-        newAction = {
-            "action": $('#new-action-action').val(),
-            "date": $('#new-action-date').val() + ' ' + $('#new-action-time').val() ,
-            "id": getScheduleMaxId($scope.schedule) + 1,
-        }
-        console.log($scope.schedule[0]);
-        console.log(newAction);
-        $scope.schedule.push(newAction);
-        console.log($scope.schedule);
-        // TODO and post to server
-        $('#addToScheduleModal').modal('hide');
-    }
     // at the bottom of your controller
     var init = function () {
        // check if there is query in url
        // and fire search in case its value is not empty
-       $scope.loadSchedule();
+       $scope.loadRecommendations(0);
     };
     // and fire it after definition
     init();

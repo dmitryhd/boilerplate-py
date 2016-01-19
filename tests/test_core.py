@@ -38,4 +38,4 @@ class TestWeb(unittest.TestCase):
     def test_index(self):
         """ Web: get main page. """
         main_page = self.get_and_check('/')
-        self.assertIn('Main', main_page)
+        self.assertIn('Recommended', main_page)

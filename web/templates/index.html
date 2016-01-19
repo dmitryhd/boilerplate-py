@@ -1,86 +1,58 @@
 {% extends "base.html" %}
 {% block scripts %}
-    <script language="javascript" src="/static/js/recom_review.js"></script>
+<script language="javascript" src="/static/js/recom_review.js"></script>
 {% endblock %}
 
 {% block body %}
-<h1>Main</h1>
+<h1>Avito recommendations review</h1>
 <hr/>
-
-
-<div class="panel panel-default" ng-app="recom_review" ng-controller="reviewCtrl">
-    <!-- Add action -->
-    <div class="modal fade" id="addToScheduleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Schedule action</h4>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label>Action</label>
-                            <input class="form-control" list="actions-list" id="new-action-action" size="40" value="Start">
-                            <datalist id="actions-list">
-                                <option value="Start">
-                                <option value="Stop">
-                            </datalist>
-                        </div>
-                        <div class="form-group">
-                            <label>Date</label>
-                            <input class="form-control" id="new-action-date" type="date">
-                        </div>
-                        <div class="form-group">
-                            <label>Time</label>
-                            <input class="form-control" id="new-action-time" type="time" value="08:00">
-                        </div>
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" id="send-test-specific-btn" class="btn btn-primary" ng-click="scheduleAction()">Add</button>
-                </div>
+<div ng-app="recom_review" ng-controller="reviewCtrl">
+    <div class="center-block no-margin" >
+        <a class="btn btn-sm btn-default " ng-click="next()">
+            <span class="glyphicon glyphicon-transfer" aria-hidden="true" ></span>
+            next
+        </a>
+    </div>
+    <div class="row no-margin">
+        <div class="panel panel-default col-md-5 no-hor-pad" >
+            <div class="panel-heading">
+                <strong>History</strong>
             </div>
+            <table class="table table-striped table-condensed" >
+                {% raw %}
+                <thead>
+                <tr>
+                    <th class="col-md-6" >item_id</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in history">
+                    <td class="col-md-1"> {{item.item_id }}</td>
+                </tr>
+                </tbody>
+                {% endraw %}
+            </table>
+        </div>
+
+        <div class="panel panel-default col-md-5 no-hor-pad right-panel" >
+            <div class="panel-heading">
+                <strong>Recommended</strong>
+            </div>
+            <table class="table table-striped table-condensed" >
+                {% raw %}
+                <thead>
+                <tr>
+                    <th class="col-md-1" >item_id</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in recoms">
+                    <td class="col-md-1"> {{item.item_id }}</td>
+                </tr>
+                </tbody>
+                {% endraw %}
+            </table>
         </div>
     </div>
-
-
-    <div class="panel-heading"><strong>Schedule</strong>
-        <a class="btn btn-sm btn-default" ng-click="loadSchedule()">
-            <span class="glyphicon glyphicon-transfer" aria-hidden="true" ></span>
-            Load
-        </a>
-        <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#addToScheduleModal">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            Add
-        </a>
-    </div>
-    <table class="table table-striped table-condensed" >
-        {% raw %}
-        <thead>
-        <tr>
-            <th class="col-md-1" style="width: 30%">action</th>
-            <th class="col-md-3" style="width: 30%">date</th>
-            <th class="col-md-1" style="width: 35%">id</th>
-            <th class="col-md-1" style="width: 5%">delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="sched_el in schedule">
-            <td class="col-md-1"> {{sched_el.action }}</td>
-            <td class="col-md-3"> {{sched_el.date }}</td>
-            <td class="col-md-1"> {{sched_el.id }}</td>
-            <td class="col-md-1">
-                <a class="btn btn-xs btn-danger" ng-click="deleteFromSchedule(sched_el.id)">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true" ></span>
-                    delete {{sched_el.id }}
-                </a>
-            </td>
-        </tr>
-        </tbody>
-        {% endraw %}
-    </table>
 </div>
 {% endblock %}
