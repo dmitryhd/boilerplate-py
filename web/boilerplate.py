@@ -8,9 +8,29 @@ Simple web service boilerplate.
 
 import flask as fl
 import argparse
+import pandas as pd
+import logging
 
 from . log import configure_logger
 from . settings import Settings
+
+
+log = logging.getLogger('werkzeug')
+recom = pd.DataFrame()
+hist = pd.DataFrame()
+user_ids = []
+
+
+def load_data():
+    # mock
+    global recom
+    global hist
+    global user_ids
+    log.info('loading data')
+    recom = pd.DataFrame({'item_id': [1, 2, 3, 4], 'user_id': [1, 1, 2, 2]})
+    hist = pd.DataFrame({'item_id': [10, 20, 30, 40], 'user_id': [1, 1, 2, 2]})
+    user_ids = [1, 2]
+    log.info('loading data: done!')
 
 
 def get_application(settings):
@@ -43,29 +63,30 @@ def index():
 
 
 def get_recommendations(user_id):
-    recoms = [
-        {'item_id': '10'},
-        {'item_id': '10'},
-        {'item_id': '10'},
-        {'item_id': '10'},
-    ]
-    history = [
-        {'item_id': 12},
-        {'item_id': 13},
-    ]
-    return fl.jsonify(recoms=recoms, history=history)
-
-
-def run_server(port=9000):
-    settings = Settings()
-    app = get_application(settings)
-    app.run(port=port)
+    rec = recom[recom.user_id == user_id].to_dict('records')
+    for item in rec:
+        for key in item:
+            item[key] = int(item[key])
+    history = hist[hist.user_id == user_id].to_dict('records')
+    for item in history:
+        for key in item:
+            item[key] = int(item[key])
+    return fl.jsonify(recoms=rec,
+                      history=history,
+                      user_ids=user_ids)
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--port', type=int, default=9000)
     return parser.parse_args()
+
+
+def run_server(port=9000):
+    settings = Settings()
+    app = get_application(settings)
+    load_data()
+    app.run(port=port)
 
 
 if __name__ == '__main__':
