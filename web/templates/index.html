@@ -11,7 +11,11 @@ Review of recommedations
 <hr/>
 <div ng-app="recom_review" ng-controller="reviewCtrl">
     <div class="center-block no-margin" >
-        <a class="btn btn-sm btn-default " ng-click="next()">
+        <a class="btn btn-sm btn-default " ng-click="nextUser(-1)">
+            <span class="glyphicon glyphicon-transfer" aria-hidden="true" ></span>
+            prev
+        </a>
+        <a class="btn btn-sm btn-default " ng-click="nextUser(1)">
             <span class="glyphicon glyphicon-transfer" aria-hidden="true" ></span>
             next
         </a>
