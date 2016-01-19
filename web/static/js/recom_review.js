@@ -1,17 +1,14 @@
+/*
+This application displays user recommendations and his viewing history.
 
-var app = angular.module('schedule', []);
+Views:
+- user recoms vs. history
+( can rate recom, add comment )
+- show reviewed recoms
+*/
+var app = angular.module('recom_review', []);
 
-getScheduleMaxId = function(schedule) {
-    var maxId = 0;
-    for (var i = 0; i < schedule.length; i++) {
-        if(schedule[i].id > maxId) {
-            maxId = schedule[i].id;
-        }
-    }
-    return maxId;
-}
-
-app.controller('scheduleCtrl', function($scope, $http) {
+app.controller('reviewCtrl', function($scope, $http) {
     $scope.schedule = [];
     $scope.loadSchedule = function () {
         var httpRequest = $http({
