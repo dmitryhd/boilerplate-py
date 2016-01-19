@@ -10,6 +10,7 @@ import flask as fl
 import argparse
 import pandas as pd
 import logging
+from datetime import datetime
 
 from . log import configure_logger
 from . settings import Settings
@@ -27,8 +28,40 @@ def load_data():
     global hist
     global user_ids
     log.info('loading data')
-    recom = pd.DataFrame({'item_id': [1, 2, 3, 4], 'user_id': [1, 1, 2, 2]})
-    hist = pd.DataFrame({'item_id': [10, 20, 30, 40], 'user_id': [1, 1, 2, 2]})
+    recom = pd.DataFrame({
+        'item_id': [1, 2, 3, 4],
+        'user_id': [1, 1, 2, 2],
+        'img_url': [
+            'https://55.img.avito.st/640x480/1299509755.jpg',
+            'https://55.img.avito.st/640x480/1299509755.jpg',
+            'https://55.img.avito.st/640x480/1299509755.jpg',
+            'https://55.img.avito.st/640x480/1299509755.jpg',
+        ],
+        'url': [
+            'https://www.avito.ru/moskva/gruzoviki_i_spetstehnika/gusenichnyy_ekskavator_doosan_dx300lca_yu._koreya_482375232',
+            'https://www.avito.ru/moskva/gruzoviki_i_spetstehnika/gusenichnyy_ekskavator_doosan_dx300lca_yu._koreya_482375232',
+            'https://www.avito.ru/moskva/gruzoviki_i_spetstehnika/gusenichnyy_ekskavator_doosan_dx300lca_yu._koreya_482375232',
+            'https://www.avito.ru/moskva/gruzoviki_i_spetstehnika/gusenichnyy_ekskavator_doosan_dx300lca_yu._koreya_482375232',
+        ]
+    })
+    date = datetime.now()
+    hist = pd.DataFrame({
+        'item_id': [10, 20, 30, 40],
+        'user_id': [1, 1, 2, 2],
+        'date': [date] * 4,
+        'img_url': [
+            'https://55.img.avito.st/640x480/1299509755.jpg',
+            'https://55.img.avito.st/640x480/1299509755.jpg',
+            'https://55.img.avito.st/640x480/1299509755.jpg',
+            'https://55.img.avito.st/640x480/1299509755.jpg',
+        ],
+        'url': [
+            'https://www.avito.ru/moskva/gruzoviki_i_spetstehnika/gusenichnyy_ekskavator_doosan_dx300lca_yu._koreya_482375232',
+            'https://www.avito.ru/moskva/gruzoviki_i_spetstehnika/gusenichnyy_ekskavator_doosan_dx300lca_yu._koreya_482375232',
+            'https://www.avito.ru/moskva/gruzoviki_i_spetstehnika/gusenichnyy_ekskavator_doosan_dx300lca_yu._koreya_482375232',
+            'https://www.avito.ru/moskva/gruzoviki_i_spetstehnika/gusenichnyy_ekskavator_doosan_dx300lca_yu._koreya_482375232',
+        ]
+    })
     user_ids = [1, 2, 10, 20]
     log.info('loading data: done!')
 
@@ -66,11 +99,17 @@ def get_recommendations(user_id):
     rec = recom[recom.user_id == user_id].to_dict('records')
     for item in rec:
         for key in item:
-            item[key] = int(item[key])
+            try:
+                item[key] = int(item[key])
+            except:
+                pass
     history = hist[hist.user_id == user_id].to_dict('records')
     for item in history:
         for key in item:
-            item[key] = int(item[key])
+            try:
+                item[key] = int(item[key])
+            except:
+                pass
     return fl.jsonify(recoms=rec,
                       history=history,
                       user_ids=user_ids)

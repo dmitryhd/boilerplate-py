@@ -37,6 +37,12 @@ Review of recommedations
                 <tbody>
                 <tr ng-repeat="item in history">
                     <td class="col-md-1"> {{item.item_id }}</td>
+                    <td class="col-md-6">{{item.date}}</td>
+                    <td class="col-md-1">
+                        <a href="{{item.url}}" target="_blank">
+                            <img src="{{item.img_url}}" style="height: 100px;"/>
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
                 {% endraw %}
@@ -56,7 +62,12 @@ Review of recommedations
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in recoms">
-                    <td class="col-md-1"> {{item.item_id }}</td>
+                    <td class="col-md-6"> {{item.item_id }}</td>
+                    <td class="col-md-1">
+                        <a href="{{item.url}}" target="_blank">
+                        <img src="{{item.img_url}}" style="height: 100px;"/>
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
                 {% endraw %}
