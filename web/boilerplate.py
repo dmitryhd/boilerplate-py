@@ -29,7 +29,7 @@ def load_data():
     log.info('loading data')
     recom = pd.DataFrame({'item_id': [1, 2, 3, 4], 'user_id': [1, 1, 2, 2]})
     hist = pd.DataFrame({'item_id': [10, 20, 30, 40], 'user_id': [1, 1, 2, 2]})
-    user_ids = [1, 2]
+    user_ids = [1, 2, 10, 20]
     log.info('loading data: done!')
 
 
