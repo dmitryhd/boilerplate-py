@@ -4,7 +4,8 @@ import sys
 sys.path.append('.')
 sys.path.append('..')
 
-from web import runner
+from web import review_web
+
 
 if __name__ == '__main__':
-    runner.main()
+    review_web.main()

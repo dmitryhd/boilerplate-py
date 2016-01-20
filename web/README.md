@@ -7,19 +7,11 @@ Web page is using *angular* and *jQuery* (libs included in static).
 
 Usage
 -----
-```
-service ...
-```
 
-- note1
-
+- run: ```./bin/recom_review.py ```
 
 Features
 ---------
 
-- list of features
+- side by side review of recommendations
 
-Bugs
--------
-
-- known bug

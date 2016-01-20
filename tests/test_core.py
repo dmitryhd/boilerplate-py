@@ -10,6 +10,7 @@ sys.path.append('.')
 sys.path.append('..')
 
 import web
+from web import review_web
 
 
 class TestWeb(unittest.TestCase):
@@ -20,6 +21,8 @@ class TestWeb(unittest.TestCase):
         settings = web.Settings()
         app = web.get_application(settings)
         cls.app = app.test_client()
+        review_web.load_data()
+
 
     def get(self, url):
         """ :returns: utf8 string, containig html code of url. """
@@ -40,3 +43,9 @@ class TestWeb(unittest.TestCase):
         """ Web: get main page. """
         main_page = self.get_and_check('/')
         self.assertIn('Recommended', main_page)
+
+    def test_get_recom(self):
+        data = self.get_json('/get-recommendations/1')
+        self.assertIn('user_ids', data)
+        self.assertIn('history', data)
+        self.assertIn('recoms', data)

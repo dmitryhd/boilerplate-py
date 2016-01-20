@@ -128,6 +128,10 @@ def run_server(port=9000):
     app.run(port=port)
 
 
-if __name__ == '__main__':
+def main():
     args = parse_args()
     run_server(args.port)
+
+
+if __name__ == '__main__':
+    main()
