@@ -5,6 +5,7 @@
 import unittest
 import json
 import sys
+from unittest.mock import patch
 
 sys.path.append('.')
 sys.path.append('..')
@@ -22,7 +23,6 @@ class TestWeb(unittest.TestCase):
         app = web.get_application(settings)
         cls.app = app.test_client()
         review_web.load_data()
-
 
     def get(self, url):
         """ :returns: utf8 string, containig html code of url. """
@@ -49,3 +49,12 @@ class TestWeb(unittest.TestCase):
         self.assertIn('user_ids', data)
         self.assertIn('history', data)
         self.assertIn('recoms', data)
+
+
+class TestCore(unittest.TestCase):
+
+    @patch('flask.Flask.run')
+    def test_main(self, app_mock):
+        sys.argv = ['', '-p', '8887']
+        review_web.main()
+        self.assertTrue(app_mock.called)
